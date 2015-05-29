@@ -1,0 +1,96 @@
+<html>
+	<head>
+		<title>Fruit Wars!!!</title>
+		<style>
+			td {
+				text-align: center;
+				border: 1px solid #eee;
+				width: 40px;
+				height: 40px;
+				position: relative;
+			}
+			.sq { border-color: black; }
+			.p1 { position: absolute; top: 0; left: 0; }
+			.p2 { position: absolute; top: 20px; left: 0; }
+		</style>
+		<script src="jquery-2.1.4.min.js"></script>
+	</head>
+	<body>
+		<table>
+			<tr><td class="sq">+1 ammo</td><td class="sq"><td class="sq"><img src="Heart.png" height="30" width="30"></td></td><td class="sq">+1 Card</td><td class="sq"><td class="sq">+1 ammo<td class="sq">V.S.<td class="sq"><td class="sq"><img src="Heart.png" height="30" width="30"><td 							class="sq"><td class="sq">+1 Card<td class="sq"></tr>
+			<tr><td class="sq">start</td><td class="em"></td><td class="sq"></td><td class="em"><td class="sq"><td class="em"><td class="em"><td class="em"><td class="em"><td class="sq">V.S.<td class="em"><td class="sq"></tr>
+			<tr><td class="em"></td><td class="em"></td><td class="sq">+1 ammo</td><td class="em"><td class="sq">+1 Card<td class="em"><td class="em"><td class="sq"><td class="sq">+1 ammo<td class="sq"><td class="em"><td class="sq">+1 ammo</tr>
+			<tr><td class="em"></td><td class="sq">V.S.</td><td class="sq"></td><td class="sq"><td class="sq"><td class="sq">+1 ammo<td class="em"><td class="sq">+1 Card<td class="em"><td class="em"><td class="em"><td class="sq">V.S.</tr>
+			<tr><td class="em"></td><td class="sq">+1 ammo</td><td class="em"></td><td class="em"><td class="em"><td class="sq"><td class="sq"><td class="sq"><img src="Heart.png" height="30" width="30"><td class="sq"><td class="em"><td class="em"><td class="sq"><img src="Heart.png" height="30" width="30"></tr>
+			<tr><td class="em"></td><td class="sq"><img src="Heart.png" height="30" width="30"></td><td class="em"></td><td class="em"><td class="em"><td class="sq">V.S.<td class="em"><td class="em"><td class="sq">+1 Card<td class="sq"><td class="sq"><td class="sq">+1 Card</tr>
+			<tr><td class="em"></td><td class="sq"></td><td class="sq">+1 Card</td><td class="sq"><td class="sq">+1 ammo<td class="sq"><td class="em"><td class="sq" colspan="3" rowspan="3"><img src="FruitDragon.png" height="120" width="120"></td><td class="sq"></td><td class="sq">+1 ammo</td></td></tr>
+			<tr><td class="em"></td><td class="sq"></td><td class="em"></td><td class="em"><td class="em"><td class="sq">+1 Card<td class="em"><td class="em"><td class="em"></tr>
+			<tr><td class="em"></td><td class="sq">+1 ammo</td><td class="sq">V.S.</td><td class="sq"><img src="Heart.png" height="30" width="30"><td class="sq"><td class="sq">+1 ammo<td class="em"><td class="em"><td class="em"></tr>
+		</table>
+		<script>
+var p1 = { x: 0, y: 1 };
+var p2 = { x: 0, y: 1 };
+var squares = [];
+setUpSquares();
+placePlayer();
+
+$("body").on("keyup", function(e) {
+	var tox = p1.x;
+	var toy = p1.y;	
+	if(e.keyCode == 38) {
+		toy = toy - 1;
+	}
+	if(e.keyCode == 40) {
+		toy = toy + 1;
+	}	
+	if(e.keyCode == 39) {
+		tox = tox + 1;
+	}
+	if(e.keyCode == 37) {
+		tox = tox - 1;
+	}
+	if(playerCanGoTo(tox, toy)) {
+		p1.x = tox;
+		p1.y = toy;
+		placePlayer();
+	}
+});
+
+function playerCanGoTo(x, y) {
+	if(x<0 || y<0) return false;
+	if(x>11 || y>8) return false;
+	return !squares[y][x].classList.contains('em');
+}
+
+function placePlayer() {
+	$(".player").remove();
+	$(squares[p1.y][p1.x]).append($('<img class="player p1" height="20" width="20" src="P1.png">'));
+	$(squares[p2.y][p2.x]).append($('<img class="player p2" height="20" width="20" src="P2.png">'));
+}
+
+function setUpSquares() {
+	var allTds = document.getElementsByTagName("td");
+	var i = 0;
+	for(var y=0; y<9; y++){
+		squares[y] = [];
+		for(var x=0; x<12; x++) {
+			var inDragon = x > 6 && x < 10 && y > 5;
+			if(inDragon && x == 7 && y == 6) {
+				inDragon = false;
+			}
+			if(inDragon) {
+				squares[y][x] = squares[6][7];
+			} else {
+				squares[y][x] = allTds[i];
+				i = i + 1;
+			}
+		}
+	}
+}
+			
+			
+		</script>
+	</body>
+</html>
+
+
